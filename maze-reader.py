@@ -1,4 +1,5 @@
 # Imports
+import os
 # import matplotlib.pyplot as plt                             # uncomment para sa pagplot ng maze
 
 
@@ -23,12 +24,12 @@ def read_map(file_name):
 
         # basically 0 is a walkable block or space, and 1 is a wall
         for cell in raw_row:
-            if cell == "." or cell == "@":
-                grid_row.append(0)
+            if cell == "@":
+                grid_row.append(1)                          # Wall
             else:
-                grid_row.append(1)
+                grid_row.append(0)                          # Walkable space ('.')
 
-        grid.append(grid_row)                               # Adds the the row to the 2D grid
+        grid.append(grid_row)                               # Adds the row to the 2D grid
 
     return grid, width, height
 
@@ -67,7 +68,10 @@ def read_scenarios(file_name):
 
 
 # Test print
-def test_if_gumagana(grid, width, height, scenarios):
+def test_if_gumagana(map_name, grid, width, height, scenarios):
+    print("\n====================\n")
+
+    print("Map File:", map_name)
     print("Dimensions:", str(width) + " x " + str(height))
     print("Total Scenarios: " + str(len(scenarios)))
 
@@ -92,17 +96,38 @@ def test_if_gumagana(grid, width, height, scenarios):
         print("Optimal Length: " + str(optimal_length)) 
         print("Start Cell Value: " + str(cell_value) + "\n")
 
+    print("====================\n")
+
 
 # Main
 
-map_results = read_map("maze-map/maze512-1-0.map")                   # Reads the maze grid file
+map_folder = "maze-map"                                     # Folder containing all .map files
+scen_folder = "maze-scen"                                   # Folder containing all .map.scen files
 
-# Hiwalayin ang results
-grid = map_results[0]
-width = map_results[1]
-height = map_results[2]
+map_files = sorted(os.listdir(map_folder))                  # .map files in alphabetical order (?)
 
-scenarios = read_scenarios("maze-scen/maze512-1-0.map.scen")              # Reads the scenario test cases
+# Loops through every singel file in the maze-map folder
+for map_file_name in map_files:
+    # In case may maligaw na hindi .map file
+    if not map_file_name.endswith(".map"):
+        continue
 
-# Testing testing things just got more interesting
-test_if_gumagana(grid, width, height, scenarios)
+    map_path = map_folder + "/" + map_file_name             # Builds the full path for the .map file
+    scen_path = scen_folder + "/" + map_file_name + ".scen" # Builds the matching .map.scen file path
+
+    # Checks if the matching scenario file exists before reading
+    if not os.path.exists(scen_path):
+        print("Warning: Missing scenario file for", map_file_name)
+        continue
+
+    map_results = read_map(map_path)                        # Reads the maze grid file
+
+    # Hiwalayin ang results
+    grid = map_results[0]
+    width = map_results[1]
+    height = map_results[2]
+
+    scenarios = read_scenarios(scen_path)                   # Reads the scenario test cases
+
+    # Testing testing things just got more interesting
+    test_if_gumagana(map_file_name, grid, width, height, scenarios)
