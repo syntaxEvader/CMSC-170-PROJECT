@@ -1,4 +1,5 @@
 from math import inf, sqrt
+import heapq
 
 _DIAGONAL_COST = sqrt(2)
 # a move is a (x, y, cost) tuple
@@ -33,17 +34,16 @@ def isOpen(grid, x, y):
 
 def getF(cell, gValue, goal):
     return gValue[cell] + octile_distance(cell, goal)
-def removeMinF(openList, gValue, goal): 
-    currmin = inf
-    minIndex = 0
+def removeMinF(openList, gValue): 
+    while openList:
+        _, queuedCost, x, y = heapq.heappop(openList)
+        cell = (x, y)
 
-    for i in range(len(openList)):
-        currentF = getF(openList[i], gValue, goal)
-        if  currentF < currmin:
-            currmin = currentF
-            minIndex = i    
+        # Ignore an older entry if this cell has since gotten a cheaper route.
+        if queuedCost == gValue.get(cell):
+            return cell
+    return None
 
-    return openList.pop(minIndex)
 def goalTest(cell, goal):
     if cell == goal:
         return True
@@ -57,7 +57,7 @@ def a_star(grid, start, goal, on_explore=None):
         raise ValueError("Grid rows must all have the same width")
     height, width = len(grid), len(grid[0])
     inOpen = [[False] * width for _ in range(height)]
-    openList = [start]
+    openList = [(octile_distance(start, goal), 0.0, start[0], start[1])] # use a min heap for faster accessing
     gValue = {start: 0.0} # g value is the cost from start to node
     parentDict = {} # node: parent value pairs
     goalPath = []  # stores the shortest path
@@ -74,7 +74,7 @@ def a_star(grid, start, goal, on_explore=None):
 
     # main a* loop
     while(openList != []):
-        bestNode = removeMinF(openList, gValue, goal)
+        bestNode = removeMinF(openList, gValue)
         x, y = bestNode
         inOpen[y][x] = False
 
@@ -110,8 +110,7 @@ def a_star(grid, start, goal, on_explore=None):
                 parentDict[neighbor] = bestNode
                 gValue[neighbor] = newCost
                 # add neighbor to open list
-                if not inOpen[neighbor[1]][neighbor[0]]:
-                    openList.append(neighbor)
-                    inOpen[neighbor[1]][neighbor[0]] = True
+                priority = newCost + octile_distance(neighbor, goal)
+                heapq.heappush(openList, (priority, newCost, neighbor[0], neighbor[1]))
 
     return None, None, []
