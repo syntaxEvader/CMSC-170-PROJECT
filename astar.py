@@ -55,7 +55,8 @@ def a_star(grid, start, goal, on_explore=None):
         raise ValueError("Grid must contain at least one cell")
     if any(len(row) != len(grid[0]) for row in grid):
         raise ValueError("Grid rows must all have the same width")
-    
+    height, width = len(grid), len(grid[0])
+    inOpen = [[False] * width for _ in range(height)]
     openList = [start]
     gValue = {start: 0.0} # g value is the cost from start to node
     parentDict = {} # node: parent value pairs
@@ -75,6 +76,7 @@ def a_star(grid, start, goal, on_explore=None):
     while(openList != []):
         bestNode = removeMinF(openList, gValue, goal)
         x, y = bestNode
+        inOpen[y][x] = False
 
         if goalTest(bestNode, goal):
             #get path from start to goal node
@@ -108,7 +110,8 @@ def a_star(grid, start, goal, on_explore=None):
                 parentDict[neighbor] = bestNode
                 gValue[neighbor] = newCost
                 # add neighbor to open list
-                if neighbor not in openList:
+                if not inOpen[neighbor[1]][neighbor[0]]:
                     openList.append(neighbor)
+                    inOpen[neighbor[1]][neighbor[0]] = True
 
     return None, None, []
