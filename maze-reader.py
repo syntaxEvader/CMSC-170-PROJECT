@@ -2,6 +2,7 @@
 import os
 # from astar import a_star                                  # later when i push
 from maze_visualizer import animate_search
+from bfs import bfs
 
 map_folder = "maze-map"                                     # Folder containing all .map files
 scen_folder = "maze-scen"                                   # Folder containing all .map.scen files
@@ -157,7 +158,9 @@ def choose_algorithm(): # function for choosing search algorithm
             return None, None
         #if choice == "1":
             return "A*", a_star
-        if choice in ("2", "3", "4"):
+        elif choice=="3":
+            return "Breadth-First Seach",bfs
+        elif choice in ("2", "4"):
             algorithm_names = {
                 "2": "Uniform Cost Search",
                 "3": "Breadth-First Search",
