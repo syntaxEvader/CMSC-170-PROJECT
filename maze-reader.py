@@ -1,6 +1,6 @@
 # Imports
 import os
-from astar import a_star
+# from astar import a_star                                  # later when i push
 from maze_visualizer import animate_search
 
 map_folder = "maze-map"                                     # Folder containing all .map files
@@ -155,7 +155,7 @@ def choose_algorithm(): # function for choosing search algorithm
         choice = input("Enter a number: ").strip()
         if choice == "0":
             return None, None
-        if choice == "1":
+        #if choice == "1":
             return "A*", a_star
         if choice in ("2", "3", "4"):
             algorithm_names = {
