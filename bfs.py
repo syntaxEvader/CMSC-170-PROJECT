@@ -1,5 +1,5 @@
 import math
-
+from collections import deque
 def bfs(grid, start, goal, on_explore=None):
     #bounds of the grid
     max_row=len(grid)
@@ -15,9 +15,9 @@ def bfs(grid, start, goal, on_explore=None):
            (-1,1,math.sqrt(2)), #down-left
            (1,1,math.sqrt(2)) #down-right
     ]
-
-    visited=[start] #list for standard BFS, keeps track of visited nodes
-    queue=[start] #queue for standard BFS, keep track of ordering for nodes to visit
+    visited = [[False] * max_col for _ in range(max_row)]
+    visited[start[1]][start[0]] = True #2d array for standard BFS, keeps track of visited nodes
+    queue=deque([start]) #queue for standard BFS, keep track of ordering for nodes to visit
     parent={start: None} #for backtracking purposes later: format is {node:parent}
     costs={start: 0.0} #costs to get to each path
     explored=[] #list of nodes explored, keep track for statistics and animations
@@ -27,9 +27,10 @@ def bfs(grid, start, goal, on_explore=None):
 
     while queue and valid_path==False:
         #pop the current node and add it to visiited nodes
-        curr_node=queue.pop(0)
-        visited.append(curr_node)
+        curr_node=queue.popleft()
 
+        visited.append(curr_node)
+        explored.append(curr_node)
         if on_explore is not None:
             on_explore(curr_node)
 
@@ -48,8 +49,8 @@ def bfs(grid, start, goal, on_explore=None):
                 if grid[new_y][new_x]==0:
                     new_cost=costs[curr_node]+move_cost #cost to reach the neighbor
                     #update node as visited if not already visited
-                    if(new_x,new_y) not in visited:
-                        visited.append((new_x,new_y)) #add to visited lsit
+                    if not visited[new_y][new_x]:
+                        visited[new_y][new_x] = True #change 2d array value to true
                         parent[(new_x,new_y)]=curr_node #add parent data
                         costs[(new_x,new_y)]=new_cost #add cost
                         queue.append((new_x,new_y)) #append to the quqeue
