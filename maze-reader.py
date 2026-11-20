@@ -2,6 +2,7 @@
 import os
 import time
 import tracemalloc
+import math
 from astar import a_star                                  # later when i push
 from maze_visualizer import animate_search
 from bfs import bfs
@@ -134,7 +135,7 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
                 "Optimal Length: " + str(optimal_length),
                 "Start Cell Value: " + "Walkable" if cell_value == 0 else "Wall",
                 "Path Cost: " + str(path_cost),
-                "Shortest Path?" + " Yes\n" if path_cost == optimal_length else " No\n"
+                "Shortest Path?" + (" Yes\n" if math.isclose(path_cost, optimal_length, abs_tol=1e-7) else " No\n")
             ])
         information.extend([
             "Algorithm Runtime: {:.6f} ms".format(runtime_seconds * 1000),
@@ -148,9 +149,6 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
         animate_search(
             grid, start_loc, goal_loc, path, path_cost, explored, information
         )
-
-        # Checks if the starting coordinate is walkable (0 = open path, 1 = wall)
-
 
     print("====================\n")
 
@@ -200,7 +198,7 @@ def choose_algorithm(): # function for choosing search algorithm
         if choice == "1":
             return "A*", a_star
         elif choice=="3":
-            return "Breadth-First Seach",bfs
+            return "Breadth-First Search",bfs
         elif choice in ("2", "4"):
             algorithm_names = {
                 "2": "Uniform Cost Search",
