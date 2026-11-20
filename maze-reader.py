@@ -78,11 +78,25 @@ def read_scenarios(file_name):
 def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, algorithm):
     print("\n====================\n")
 
-    print("Map File:", map_name)
-    print("Dimensions:", str(width) + " x " + str(height))
-    print("Total Scenarios: " + str(len(scenarios)))
-
-    print("\nScenarios:")
+    headers = [
+        "Map File",
+        "Dimensions",
+        "Total Scenarios",
+        "Algorithm",
+        "Scenario",
+        "Status",
+        "Start Coordinates",
+        "Goal Coordinates",
+        "Optimal Length",
+        "Start Cell Value",
+        "Path Cost",
+        "Shortest Path?",
+        "Algorithm Runtime (ms)",
+        "Current Memory (MB)",
+        "Peak Memory (MB)",
+        "Explored Cells",
+    ]
+    print("|".join(headers))
 
     # 10th 30th 50th 70th 90th percentile
     used_scenarios = []
@@ -96,8 +110,7 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
 
         start_loc, goal_loc, optimal_length = used_scenarios[i]
 
-        start_x = start_loc[0]
-        start_y = start_loc[1]
+        start_x, start_y = start_loc
 
         cell_value = grid[start_y][start_x]
 
@@ -116,43 +129,78 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
         information = ["Algorithm: " + algorithm_name]
         if path is None:
             path = []
+            status_val = "No path found"
+            opt_len_val = "No path" if optimal_length < 0 else str(optimal_length)
+            cell_val_str = "Walkable" if cell_value == 0 else "Wall"
+            path_cost_val = "N/A"
+            shortest_val = "N/A"
+
             information.extend([
                 "No path found.",
                 "-- Scenario " + str(i+1) + " --",
                 "Start Coordinates: " + str(start_loc),
                 "Goal Coordinates: " + str(goal_loc),
-                "Expected Optimal Length: " + ("No path" if optimal_length < 0 else str(optimal_length)),
-                "Start Cell Value: " + ("Walkable" if cell_value == 0 else "Wall"),
+                "Expected Optimal Length: " + opt_len_val,
+                "Start Cell Value: " + cell_val_str,
                 "Path Cost: N/A",
                 "Shortest Path?: N/A",
             ])
         else:
+            status_val = "Path found"
+            opt_len_val = str(optimal_length)
+            cell_val_str = "Walkable" if cell_value == 0 else "Wall"
+            path_cost_val = str(path_cost)
+            shortest_val = "Yes" if abs(path_cost - optimal_length) < 1e-6 else "No"
+
             information.extend([
                 "-- Scenario " + str(i+1) + " --",
                 "Start Coordinates: " + str(start_loc),
                 "Goal Coordinates: " + str(goal_loc),
-                "Optimal Length: " + str(optimal_length),
-                "Start Cell Value: " + "Walkable" if cell_value == 0 else "Wall",
-                "Path Cost: " + str(path_cost),
-                "Shortest Path?" + " Yes\n" if path_cost == optimal_length else " No\n"
+                "Optimal Length: " + opt_len_val,
+                "Start Cell Value: " + cell_val_str,
+                "Path Cost: " + path_cost_val,
+                "Shortest Path? " + shortest_val + "\n",
             ])
+
+        runtime_val = "{:.6f}".format(runtime_seconds * 1000)
+        curr_mem_val = f"{current / 10**6:.4f}"
+        peak_mem_val = f"{peak / 10**6:.4f}"
+        explored_val = str(len(explored))
+
         information.extend([
-            "Algorithm Runtime: {:.6f} ms".format(runtime_seconds * 1000),
-            f"Memory Usage:\n(current) {current / 10**6:.4f} MB\n(peak) {peak / 10**6:.4f} MB",
-            "Explored Cells: " + str(len(explored)),
+            "Algorithm Runtime: " + runtime_val + " ms",
+            f"Memory Usage:\n(current) {curr_mem_val} MB\n(peak) {peak_mem_val} MB",
+            "Explored Cells: " + explored_val,
         ])
 
-        for line in information:
-            print(line)
-        print()
+        row = [
+            str(map_name),
+            str(width) + " x " + str(height),
+            str(len(scenarios)),
+            str(algorithm_name),
+            str(i + 1),
+            status_val,
+            str(start_loc),
+            str(goal_loc),
+            opt_len_val,
+            cell_val_str,
+            path_cost_val,
+            shortest_val,
+            runtime_val,
+            curr_mem_val,
+            peak_mem_val,
+            explored_val,
+        ]
+        print("|".join(row))
+
         animate_search(
             grid, start_loc, goal_loc, path, path_cost, explored, information
         )
 
         # Checks if the starting coordinate is walkable (0 = open path, 1 = wall)
 
+    print("\n====================\n")
 
-    print("====================\n")
 
 # Loops through every single file in the maze-map folder
 def main_loop():
