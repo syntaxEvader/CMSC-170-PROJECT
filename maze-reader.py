@@ -80,10 +80,9 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
 
     print("Map File:", map_name)
     print("Dimensions:", str(width) + " x " + str(height))
-    print("Algorithm:", algorithm_name)
     print("Total Scenarios: " + str(len(scenarios)))
 
-    print("\nFirst 5 Scenarios:")
+    print("\nScenarios:")
 
     # 10th 30th 50th 70th 90th percentile
     used_scenarios = []
@@ -114,7 +113,7 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
             tracemalloc.stop()
         del memory_result
 
-        information = [] #store output info inside an array for printing and visualizer
+        information = ["Algorithm: " + algorithm_name]
         if path is None:
             path = []
             information.extend([
@@ -135,11 +134,11 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
                 "Optimal Length: " + str(optimal_length),
                 "Start Cell Value: " + "Walkable" if cell_value == 0 else "Wall",
                 "Path Cost: " + str(path_cost),
-                "Shortest Path?" + "Yes\n" if path_cost == optimal_length else "No\n"
+                "Shortest Path?" + " Yes\n" if path_cost == optimal_length else " No\n"
             ])
         information.extend([
             "Algorithm Runtime: {:.6f} ms".format(runtime_seconds * 1000),
-            f"Memory Usage:\n(current) {current / 10**6:.4f} MB\n (peak) {peak / 10**6:.4f} MB",
+            f"Memory Usage:\n(current) {current / 10**6:.4f} MB\n(peak) {peak / 10**6:.4f} MB",
             "Explored Cells: " + str(len(explored)),
         ])
 
