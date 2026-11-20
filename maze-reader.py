@@ -93,23 +93,24 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
         start_x = start_loc[0]
         start_y = start_loc[1]
 
+        cell_value = grid[start_y][start_x]
+
         path, path_cost, explored = animate_search(grid, start_loc, goal_loc, algorithm)
         if path is None:
             path = []
             print("No path found.")
         else:
+            print("-- Scenario " + str(i) + " -- ")
+            print("Start Coordinates: " + str(start_loc))
+            print("Goal Coordinates: " + str(goal_loc))
+            print("Optimal Length: " + str(optimal_length)) 
+            print("Start Cell Value: " + str(cell_value))
             print("Path Cost:", path_cost)
-            print("Benchmark Optimal Length:", optimal_length)
-        print("Explored Cells:", len(explored))
+
+        print("Explored Cells:", len(explored), "\n")
 
         # Checks if the starting coordinate is walkable (0 = open path, 1 = wall)
-        cell_value = grid[start_y][start_x]
 
-        print("-- Scenario " + str(i) + " -- ")
-        print("Start Coordinates: " + str(start_loc))
-        print("Goal Coordinates: " + str(goal_loc))
-        print("Optimal Length: " + str(optimal_length)) 
-        print("Start Cell Value: " + str(cell_value) + "\n")
 
     print("====================\n")
 

@@ -29,7 +29,6 @@ def bfs(grid, start, goal, on_explore=None):
         #pop the current node and add it to visiited nodes
         curr_node=queue.popleft()
 
-        visited.append(curr_node)
         explored.append(curr_node)
         if on_explore is not None:
             on_explore(curr_node)
@@ -49,6 +48,9 @@ def bfs(grid, start, goal, on_explore=None):
                 if grid[new_y][new_x]==0:
                     new_cost=costs[curr_node]+move_cost #cost to reach the neighbor
                     #update node as visited if not already visited
+                    if move_x != 0 and move_y != 0:
+                        if grid[curr_y][new_x] != 0 or grid[new_y][curr_x] != 0:
+                            continue
                     if not visited[new_y][new_x]:
                         visited[new_y][new_x] = True #change 2d array value to true
                         parent[(new_x,new_y)]=curr_node #add parent data
