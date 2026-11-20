@@ -139,7 +139,7 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
             ])
         information.extend([
             "Algorithm Runtime: {:.6f} ms".format(runtime_seconds * 1000),
-            f"Memory Usage: (current) {current / 10**6:.4f} MB\n (peak) {peak / 10**6:.4f} MB",
+            f"Memory Usage:\n(current) {current / 10**6:.4f} MB\n (peak) {peak / 10**6:.4f} MB",
             "Explored Cells: " + str(len(explored)),
         ])
 
