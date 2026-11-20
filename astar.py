@@ -75,6 +75,8 @@ def a_star(grid, start, goal, on_explore=None):
     # main a* loop
     while(openList != []):
         bestNode = removeMinF(openList, gValue)
+        if bestNode is None:
+            break
         x, y = bestNode
         inOpen[y][x] = False
 

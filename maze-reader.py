@@ -1,5 +1,7 @@
 # Imports
 import os
+import time
+import tracemalloc
 from astar import a_star                                  # later when i push
 from maze_visualizer import animate_search
 from bfs import bfs
@@ -83,31 +85,70 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
 
     print("\nFirst 5 Scenarios:")
 
-    # First 5 cases
-    for i in range(len(scenarios)-30, len(scenarios)-25):
+    # 10th 30th 50th 70th 90th percentile
+    used_scenarios = []
+    sample_count = min(5, len(scenarios))
+    for i in range(sample_count):
+        used_scenarios.append(scenarios[i * len(scenarios) // sample_count])
+
+    for i in range(len(used_scenarios)):
         if i >= len(scenarios):
             break
 
-        start_loc, goal_loc, optimal_length = scenarios[i]
+        start_loc, goal_loc, optimal_length = used_scenarios[i]
 
         start_x = start_loc[0]
         start_y = start_loc[1]
 
         cell_value = grid[start_y][start_x]
 
-        path, path_cost, explored = animate_search(grid, start_loc, goal_loc, algorithm)
+        algorithm_start = time.perf_counter()
+        path, path_cost, explored = algorithm(grid, start_loc, goal_loc)
+        runtime_seconds = time.perf_counter() - algorithm_start
+
+        tracemalloc.start()
+        try:
+            memory_result = algorithm(grid, start_loc, goal_loc)
+            current, peak = tracemalloc.get_traced_memory()
+        finally:
+            tracemalloc.stop()
+        del memory_result
+
+        information = [] #store output info inside an array for printing and visualizer
         if path is None:
             path = []
-            print("No path found.")
+            information.extend([
+                "No path found.",
+                "-- Scenario " + str(i+1) + " --",
+                "Start Coordinates: " + str(start_loc),
+                "Goal Coordinates: " + str(goal_loc),
+                "Expected Optimal Length: " + ("No path" if optimal_length < 0 else str(optimal_length)),
+                "Start Cell Value: " + ("Walkable" if cell_value == 0 else "Wall"),
+                "Path Cost: N/A",
+                "Shortest Path?: N/A",
+            ])
         else:
-            print("-- Scenario " + str(i) + " -- ")
-            print("Start Coordinates: " + str(start_loc))
-            print("Goal Coordinates: " + str(goal_loc))
-            print("Optimal Length: " + str(optimal_length)) 
-            print("Start Cell Value: " + str(cell_value))
-            print("Path Cost:", path_cost)
+            information.extend([
+                "-- Scenario " + str(i+1) + " --",
+                "Start Coordinates: " + str(start_loc),
+                "Goal Coordinates: " + str(goal_loc),
+                "Optimal Length: " + str(optimal_length),
+                "Start Cell Value: " + "Walkable" if cell_value == 0 else "Wall",
+                "Path Cost: " + str(path_cost),
+                "Shortest Path?" + "Yes\n" if path_cost == optimal_length else "No\n"
+            ])
+        information.extend([
+            "Algorithm Runtime: {:.6f} ms".format(runtime_seconds * 1000),
+            f"Memory Usage: (current) {current / 10**6:.4f} MB\n (peak) {peak / 10**6:.4f} MB",
+            "Explored Cells: " + str(len(explored)),
+        ])
 
-        print("Explored Cells:", len(explored), "\n")
+        for line in information:
+            print(line)
+        print()
+        animate_search(
+            grid, start_loc, goal_loc, path, path_cost, explored, information
+        )
 
         # Checks if the starting coordinate is walkable (0 = open path, 1 = wall)
 
@@ -150,7 +191,7 @@ def choose_algorithm(): # function for choosing search algorithm
         print("\nChoose an algorithm:")
         print("1. A*")
         print("2. Uniform Cost Search (not implemented yet)")
-        print("3. Breadth-First Search (not implemented yet)")
+        print("3. Breadth-First Search")
         print("4. Greedy Algorithm (not implemented yet)")
         print("0. Exit")
 
