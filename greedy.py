@@ -1,4 +1,5 @@
 import math
+import heapq
 
 #ref:https://www.geeksforgeeks.org/dsa/greedy-best-first-search-algorithm/
 
@@ -25,15 +26,18 @@ def greedy(grid, start, goal, on_explore=None):
     ]
 
     visited = [[False] * max_col for _ in range(max_row)]
-    visited[start[1]][start[0]] = True #2d array for standard BFS, keeps track of visited nodes
+    visited[start[1]][start[0]] = True #2d array that keeps track of visited nodes
 
-    nodes=[start]
-    parent={start: None}
-    costs={start: 0.0}
-    explored=[]
+    heap=[(octile_distance(start,goal),start)] #heap starts with (heuristic, startnode)
+    #nodes=[start]
+    parent={start: None} #keeps track of node and its parent for backtracking purposes. format: {curr_node:parent}
+    costs={start: 0.0} #keep track of node and its cost. format: {node: cost}
+    explored=[] #list of nodes explored, keep track for statistics and animations
 
     valid_path=False
-    while nodes:
+    while heap and valid_path==False:
+        '''
+        USED FOR NON-HEAP IMPLEMENTATION
         best_node=0
         best_h=octile_distance(nodes[best_node], goal)
 
@@ -42,14 +46,15 @@ def greedy(grid, start, goal, on_explore=None):
             if h<best_h: #if the nodes' heuristic is smaller we change that to best node and pop current node
                 best_h=h
                 best_node=i
-
         curr_node=nodes.pop(best_node)
-        explored.append(curr_node)
+        '''
+        curr_node=heapq.heappop(heap)[1] #pops the current node and take its coordinate
+        explored.append(curr_node) #append the current node to the explored nodes
 
-        if on_explore is not None:
+        if on_explore is not None: #foor the visualizer function
             on_explore(curr_node)
 
-        if curr_node==goal:
+        if curr_node==goal: #if the curent node s the goal, end the iterations
             valid_path=True
             break
 
@@ -70,7 +75,9 @@ def greedy(grid, start, goal, on_explore=None):
                         visited[new_y][new_x] = True #change 2d array value to true
                         parent[(new_x,new_y)]=curr_node #add parent data
                         costs[(new_x,new_y)]=new_cost #add cost
-                        nodes.append((new_x,new_y)) #append to the quqeue
+                        h=octile_distance((new_x,new_y),goal) #get the heuristic of the node
+                        heapq.heappush(heap,(h,(new_x,new_y))) #add (heuristic, node) to the heap
+                        #nodes.append((new_x,new_y)) #append to the quqeue
     
     if not valid_path:
         return None, 0.0, explored
@@ -87,7 +94,5 @@ def greedy(grid, start, goal, on_explore=None):
     return path, path_cost, explored
 
 
-
         
         
-
