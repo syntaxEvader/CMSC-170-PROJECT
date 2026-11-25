@@ -207,11 +207,7 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
             writer.writerow(row)
             csv_file.flush()
 
-            animate_search(
-                grid, start_loc, goal_loc, path, path_cost, explored, information
-            )
-
-            # Checks if the starting coordinate is walkable (0 = open path, 1 = wall)
+            animate_search(grid, start_loc, goal_loc, path, path_cost, explored, information)
     finally:
         csv_file.close()
 
