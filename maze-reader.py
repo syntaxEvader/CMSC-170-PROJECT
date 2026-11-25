@@ -7,6 +7,8 @@ import math
 from astar import a_star                                  # later when i push
 from maze_visualizer import animate_search
 from bfs import bfs
+from greedy import greedy
+from ucs import ucs
 
 map_folder = "maze-map"                                     # Folder containing all .map files
 scen_folder = "maze-scen"                                   # Folder containing all .map.scen files
@@ -251,9 +253,9 @@ def choose_algorithm(): # function for choosing search algorithm
     while True:
         print("\nChoose an algorithm:")
         print("1. A*")
-        print("2. Uniform Cost Search (not implemented yet)")
+        print("2. Uniform Cost Search")
         print("3. Breadth-First Search")
-        print("4. Greedy Algorithm (not implemented yet)")
+        print("4. Greedy Best Search Algorithm")
         print("0. Exit")
 
         choice = input("Enter a number: ").strip()
@@ -261,16 +263,12 @@ def choose_algorithm(): # function for choosing search algorithm
             return None, None
         if choice == "1":
             return "A*", a_star
+        elif choice == "2":
+            return "Uniform Cost Search", ucs
         elif choice=="3":
             return "Breadth-First Search",bfs
-        elif choice in ("2", "4"):
-            algorithm_names = {
-                "2": "Uniform Cost Search",
-                "3": "Breadth-First Search",
-                "4": "Greedy Algorithm",
-            }
-            print(algorithm_names[choice], "is not implemented yet.")
-            continue
+        elif choice=="4":
+            return "Greedy Best First Search",greedy
         else:
             print("Invalid choice.")
 
