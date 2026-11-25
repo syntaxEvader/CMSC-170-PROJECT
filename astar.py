@@ -36,10 +36,11 @@ def getF(cell, gValue, goal):
     return gValue[cell] + octile_distance(cell, goal)
 def removeMinF(openList, gValue): 
     while openList:
-        _, queuedCost, x, y = heapq.heappop(openList)
+        _, negativeQueuedCost, x, y = heapq.heappop(openList)
         cell = (x, y)
 
         # Ignore an older entry if this cell has since gotten a cheaper route.
+        queuedCost = -negativeQueuedCost
         if queuedCost == gValue.get(cell):
             return cell
     return None
@@ -50,21 +51,20 @@ def goalTest(cell, goal):
     else:
         return False
 
-def a_star(grid, start, goal, on_explore=None):
+def a_star(grid, start, goal, on_explore=None, *, collect_explored=True):
     if not grid or not grid[0]:
         raise ValueError("Grid must contain at least one cell")
     if any(len(row) != len(grid[0]) for row in grid):
         raise ValueError("Grid rows must all have the same width")
     height, width = len(grid), len(grid[0])
-    inOpen = [[False] * width for _ in range(height)]
-    openList = [(octile_distance(start, goal), 0.0, start[0], start[1])] # use a min heap for faster accessing
+    openList = [(octile_distance(start, goal), -0.0, start[0], start[1])] # use a min heap for faster accessing
     gValue = {start: 0.0} # g value is the cost from start to node
     parentDict = {} # node: parent value pairs
     goalPath = []  # stores the shortest path
-    explored = []  # stores the explored cells
+    explored = [] if collect_explored else None # stores the explored cells
 
     if start == goal:
-        return [start], 0, []
+        return [start], 0, explored or []
 
     # validate start and goal first 
     if not isOpen(grid, start[0], start[1]):
@@ -78,7 +78,6 @@ def a_star(grid, start, goal, on_explore=None):
         if bestNode is None:
             break
         x, y = bestNode
-        inOpen[y][x] = False
 
         if goalTest(bestNode, goal):
             #get path from start to goal node
@@ -89,30 +88,31 @@ def a_star(grid, start, goal, on_explore=None):
             goalPath.append(start)
             goalPath.reverse()
 
-            return goalPath, gValue[bestNode], explored
+            return goalPath, gValue[bestNode], explored or []
         
         # for visualization
-        explored.append(bestNode)
+        if explored is not None:
+            explored.append(bestNode)
         if on_explore is not None:
             on_explore(bestNode)
 
         # get possible neighbors, check if they are walkable
-        for i in _MOVES:
-            neighbor = (x+i[0], y+i[1])
-
-            if not isOpen(grid, neighbor[0], neighbor[1]):
+        for dx, dy, move_cost in _MOVES:
+            nx, ny = x + dx, y + dy
+            if nx < 0 or nx >= width or ny < 0 or ny >= height or grid[ny][nx] != 0:
                 continue
 
-            if i[0] != 0 and i[1] != 0:
-                if grid[y][x + i[0]] == 1 or grid[y + i[1]][x] == 1:
+            if dx != 0 and dy != 0:
+                if grid[y][nx] != 0 or grid[ny][x] != 0:
                     continue
+            neighbor = (nx, ny)
             # update cost if it is less than the current cost
-            newCost = gValue[bestNode] + i[2]
+            newCost = gValue[bestNode] + move_cost
             if newCost < gValue.get(neighbor, inf):
                 parentDict[neighbor] = bestNode
                 gValue[neighbor] = newCost
                 # add neighbor to open list
                 priority = newCost + octile_distance(neighbor, goal)
-                heapq.heappush(openList, (priority, newCost, neighbor[0], neighbor[1]))
+                heapq.heappush(openList, (priority, -newCost, neighbor[0], neighbor[1]))
 
     return None, None, []

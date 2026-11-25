@@ -209,11 +209,7 @@ def test_if_gumagana(map_name, grid, width, height, scenarios, algorithm_name, a
             writer.writerow(row)
             csv_file.flush()
 
-            animate_search(
-                grid, start_loc, goal_loc, path, path_cost, explored, information
-            )
-
-            # Checks if the starting coordinate is walkable (0 = open path, 1 = wall)
+            animate_search(grid, start_loc, goal_loc, path, path_cost, explored, information)
     finally:
         csv_file.close()
 
@@ -257,9 +253,9 @@ def choose_algorithm(): # function for choosing search algorithm
     while True:
         print("\nChoose an algorithm:")
         print("1. A*")
-        print("2. Uniform Cost Search (not implemented yet)")
+        print("2. Uniform Cost Search")
         print("3. Breadth-First Search")
-        print("4. Greedy Algorithm (not implemented yet)")
+        print("4. Greedy Best Search Algorithm")
         print("0. Exit")
 
         choice = input("Enter a number: ").strip()
@@ -270,9 +266,9 @@ def choose_algorithm(): # function for choosing search algorithm
         elif choice == "2":
             return "Uniform Cost Search", ucs
         elif choice=="3":
-            return "Breadth-First Seach",bfs
-        elif choice == "4":
-            return "Greedy Best First Search", greedy
+            return "Breadth-First Search",bfs
+        elif choice=="4":
+            return "Greedy Best First Search",greedy
         else:
             print("Invalid choice.")
 

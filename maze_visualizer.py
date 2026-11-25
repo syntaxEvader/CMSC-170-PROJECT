@@ -91,7 +91,7 @@ def animate_search(
             explored[y][x] = True
             visible_explored_cells.append(cell)
         count = len(visible_explored_cells)
-        if (count < 173 and count % 7 == 0) or (count % 173 == 0 and (count < 12133 and count > 237)) or count % 2133 == 0:
+        if (count < 173 and count % 7 == 0) or (count % 377 == 0 and (count < 12133 and count > 237)) or count % 2137 == 0:
             redraw()
 
     path_found = bool(path)
