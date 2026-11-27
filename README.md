@@ -1,4 +1,4 @@
-# CMSC 170 Maze Pathfinding Project
+# CMSC 170 Maze Pathfinding Project by Undiagnosed Heuristics
 Purpose: Compare and Test different algorithms on basic grid-based mazes
 
 ## Algorithms Used
