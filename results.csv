@@ -119,3 +119,4 @@ maze512-1-4.map,512 x 512,18960,Uniform Cost Search,3,Path found,"(126, 33)","(4
 maze512-1-4.map,512 x 512,18960,A*,1,Path found,"(77, 62)","(77, 64)",2.0,Walkable,2.0,Yes,0.087900,0.0004,0.0010,2
 maze512-1-4.map,512 x 512,18960,A*,2,Path found,"(388, 287)","(107, 222)",1518.0,Walkable,1518.0,Yes,79.687000,3.8512,9.3781,34402
 maze512-1-4.map,512 x 512,18960,A*,3,Path found,"(126, 33)","(411, 67)",3035.0,Walkable,3035.0,Yes,122.094200,2.4348,7.6039,30401
+disconnected-demo.map,15 x 11,1,A*,1,No path found,"(1, 1)","(13, 9)",No path,Walkable,N/A,N/A,0.358500,0.0000,0.0060,0
