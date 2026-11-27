@@ -46,6 +46,7 @@ The program records and saves the following results to results.csv:
 
 To run the project, do `python3 maze-reader.py`
 
+Note: Project page redirects to a Canva website instead.
 ## References
 
 [1] N. Sturtevant, “Benchmarks for Grid-Based Pathfinding,”
