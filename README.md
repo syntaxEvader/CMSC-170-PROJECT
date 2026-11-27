@@ -1,7 +1,42 @@
+# CMSC 170 Maze Pathfinding Project
+Purpose: Compare and Test different algorithms on basic grid-based mazes
 
-install package matplotlib first okay?
-na-fomo raw ung main branch sa ibang branch. bakit daw sila may readme tapos siya wala.
+**Algorithms Used**
+- A*
+- Breadth-First Search
+- Uniform Cost Search
+- Greedy Best-First Search
 
----
+This project compares search algorithms on grid-based mazes using Moving AI .map and .map.scen files. The movement model allows eight directions: horizontal and vertical moves cost 1, while diagonal moves cost sqrt(2). Diagonal moves that cut across blocked corners are not allowed. A* and Greedy Best-First use Octile Distance, which matches these movement costs; BFS and Uniform Cost Search do not use a heuristic. Search results can also be visualized with Matplotlib.
 
-run `python3 maze-reader.py`
+The program records and saves the following results to results.csv:
+- Map File
+- Dimensions
+- Total Scenarios
+- Algorithm
+- Scenario (labeled from 1-5, gets the 10th 30th 50th 70th 90th percentile, to distribute scenario difficulty)
+- Status
+- Start Coordinates
+- Goal Coordinates
+- Optimal Length (optimal length based from dataset)
+- Start Cell Value
+- Path Cost (calculated path cost)
+- Shortest Path?
+- Algorithm Runtime (ms)
+- Current Memory (MB)
+- Peak Memory (MB)
+- Explored Cells
+
+Requirements
+- Python3
+- Matplotlib
+
+  install using:
+  
+  `python -m venv .venv`
+
+  `.venv\Scripts\Activate.ps1`
+
+  `pip install matplotlib`
+
+To run the project, do `python3 maze-reader.py`
