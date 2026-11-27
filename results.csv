@@ -101,3 +101,21 @@ maze512-1-4.map,512 x 512,18960,A*,3,Path found,"(126, 33)","(411, 67)",3035.0,W
 maze512-1-4.map,512 x 512,18960,A*,4,Path found,"(5, 37)","(229, 71)",4550.0,Walkable,4550.0,Yes,266.776800,3.9979,13.8439,47320
 maze512-1-4.map,512 x 512,18960,A*,5,Path found,"(103, 505)","(278, 51)",6067.0,Walkable,6067.0,Yes,1543.782600,12.6366,33.6047,120591
 disconnected-demo.map,15 x 11,1,Uniform Cost Search,1,No path found,"(1, 1)","(13, 9)",No path,Walkable,N/A,N/A,0.791200,0.0035,0.0109,49
+disconnected-demo.map,15 x 11,1,Breadth-First Search,1,No path found,"(1, 1)","(13, 9)",No path,Walkable,N/A,N/A,0.207500,0.0035,0.0102,49
+maze512-1-4.map,512 x 512,18960,Breadth-First Search,1,Path found,"(77, 62)","(77, 64)",2.0,Walkable,2.0,Yes,2.151400,0.0051,2.1277,7
+maze512-1-4.map,512 x 512,18960,Breadth-First Search,2,Path found,"(388, 287)","(107, 222)",1518.0,Walkable,1518.0,Yes,165.382100,5.4834,20.1971,47318
+maze512-1-4.map,512 x 512,18960,Breadth-First Search,3,Path found,"(126, 33)","(411, 67)",3035.0,Walkable,3035.0,Yes,82.141700,2.7091,12.3167,33101
+maze512-1-4.map,512 x 512,18960,Breadth-First Search,1,Path found,"(77, 62)","(77, 64)",2.0,Walkable,2.0,Yes,1.437800,0.0051,2.1277,7
+maze512-1-4.map,512 x 512,18960,Breadth-First Search,2,Path found,"(388, 287)","(107, 222)",1518.0,Walkable,1518.0,Yes,142.221400,5.4834,20.1971,47318
+maze512-1-4.map,512 x 512,18960,Breadth-First Search,3,Path found,"(126, 33)","(411, 67)",3035.0,Walkable,3035.0,Yes,67.405300,2.7091,12.3167,33101
+maze512-1-4.map,512 x 512,18960,Breadth-First Search,4,Path found,"(5, 37)","(229, 71)",4550.0,Walkable,4550.0,Yes,88.985500,4.6680,19.8747,52650
+maze512-1-4.map,512 x 512,18960,Breadth-First Search,5,Path found,"(103, 505)","(278, 51)",6067.0,Walkable,6067.0,Yes,168.883900,12.6889,43.4638,120646
+maze512-1-4.map,512 x 512,18960,Greedy Best First Search,1,Path found,"(77, 62)","(77, 64)",2.0,Walkable,2.0,Yes,0.885800,0.0048,2.1267,3
+maze512-1-4.map,512 x 512,18960,Greedy Best First Search,2,Path found,"(388, 287)","(107, 222)",1518.0,Walkable,1518.0,Yes,39.373700,0.4950,3.4631,4592
+maze512-1-4.map,512 x 512,18960,Greedy Best First Search,3,Path found,"(126, 33)","(411, 67)",3035.0,Walkable,3035.0,Yes,48.802100,1.1582,6.2048,12426
+maze512-1-4.map,512 x 512,18960,Uniform Cost Search,1,Path found,"(77, 62)","(77, 64)",2.0,Walkable,2.0,Yes,0.055400,0.0006,0.0021,7
+maze512-1-4.map,512 x 512,18960,Uniform Cost Search,2,Path found,"(388, 287)","(107, 222)",1518.0,Walkable,1518.0,Yes,122.276400,5.4381,14.7026,47318
+maze512-1-4.map,512 x 512,18960,Uniform Cost Search,3,Path found,"(126, 33)","(411, 67)",3035.0,Walkable,3035.0,Yes,77.680900,2.5365,8.0483,33101
+maze512-1-4.map,512 x 512,18960,A*,1,Path found,"(77, 62)","(77, 64)",2.0,Walkable,2.0,Yes,0.087900,0.0004,0.0010,2
+maze512-1-4.map,512 x 512,18960,A*,2,Path found,"(388, 287)","(107, 222)",1518.0,Walkable,1518.0,Yes,79.687000,3.8512,9.3781,34402
+maze512-1-4.map,512 x 512,18960,A*,3,Path found,"(126, 33)","(411, 67)",3035.0,Walkable,3035.0,Yes,122.094200,2.4348,7.6039,30401
