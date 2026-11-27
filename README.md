@@ -1,13 +1,17 @@
 # CMSC 170 Maze Pathfinding Project
 Purpose: Compare and Test different algorithms on basic grid-based mazes
 
-**Algorithms Used**
+## Algorithms Used
 - A*
 - Breadth-First Search
 - Uniform Cost Search
 - Greedy Best-First Search
 
+## Information
+
 This project compares search algorithms on grid-based mazes using Moving AI .map and .map.scen files. The movement model allows eight directions: horizontal and vertical moves cost 1, while diagonal moves cost sqrt(2). Diagonal moves that cut across blocked corners are not allowed. A* and Greedy Best-First use Octile Distance, which matches these movement costs; BFS and Uniform Cost Search do not use a heuristic. Search results can also be visualized with Matplotlib.
+
+## Results
 
 The program records and saves the following results to results.csv:
 - Map File
@@ -27,16 +31,24 @@ The program records and saves the following results to results.csv:
 - Peak Memory (MB)
 - Explored Cells
 
-Requirements
+## Requirements
+
 - Python3
 - Matplotlib
 
   install using:
   
-  `python -m venv .venv`
-
-  `.venv\Scripts\Activate.ps1`
-
-  `pip install matplotlib`
+  ```
+  python -m venv .venv
+  .venv\Scripts\Activate.ps1
+  pip install matplotlib
+  ```
 
 To run the project, do `python3 maze-reader.py`
+
+## References
+
+[1] N. Sturtevant, “Benchmarks for Grid-Based Pathfinding,”
+*Transactions on Computational Intelligence and AI in Games*,
+vol. 4, no. 2, pp. 144–148, 2012.
+[Online]. Available: http://web.cs.du.edu/~sturtevant/papers/benchmarks.pdf
